@@ -1,0 +1,12 @@
+{
+  "name": "signal-geo-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Signal — 100人AI検索模擬テスト（GEO診断ツール）",
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.32.0"
+  }
+}

@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Signal / AI検索でのGEO無料診断ツール</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 fill=%27%230F1420%27/%3E%3Ctext x=%2716%27 y=%2722%27 font-family=%27Georgia,serif%27 font-style=%27italic%27 font-size=%2718%27 fill=%27%23E8A33D%27 text-anchor=%27middle%27%3ES%3C/text%3E%3C/svg%3E">
+<meta name="description" content="URLを入力するだけでGEO（AI検索対策）の弱点を無料診断。問題点・改善策・必要なツールまで一貫して提示します。">
+<link rel="canonical" href="https://signal-geo.example/">
+<meta property="og:title" content="Signal / AI検索でのGEO無料診断ツール">
+<meta property="og:description" content="URLを入力するだけでGEO（AI検索対策）の弱点を無料診断。問題点・改善策・必要なツールまで一貫して提示します。">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Signal">
+<meta property="og:url" content="https://signal-geo.example/">
+<meta name="twitter:card" content="summary">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0B0F1A;
+  --bg-2:#0F1420;
+  --panel:#161C2C;
+  --card:#1B2338;
+  --card-hover:#212A40;
+  --rule:#2A3350;
+  --ink:#F2F0E8;
+  --ink-dim:#9CA3B5;
+  --ink-faint:#6B7288;
+  --amber:#E8A33D;
+  --amber-dim:#B67F2E;
+  --amber-glow:rgba(232,163,61,0.25);
+  --shadow-1:0 1px 2px rgba(0,0,0,0.3);
+  --shadow-2:0 8px 24px rgba(0,0,0,0.35);
+  --shadow-3:0 16px 48px rgba(0,0,0,0.45);
+  --radius-s:8px;
+  --radius-m:12px;
+  --radius-l:18px;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:
+    radial-gradient(ellipse 900px 480px at 15% -8%, rgba(232,163,61,0.09), transparent 60%),
+    radial-gradient(ellipse 700px 500px at 100% 8%, rgba(90,110,180,0.08), transparent 55%),
+    var(--bg);
+  background-attachment:fixed;
+  color:var(--ink);
+  font-family:'Space Grotesk', sans-serif;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--amber);color:#1B1300;}
+a{color:inherit;}
+*{transition:background-color .18s ease, border-color .18s ease, color .18s ease, transform .18s ease, box-shadow .18s ease;}
+
+.wrap{max-width:760px;margin:0 auto;padding:0 24px;}
+.wrap-wide{max-width:920px;margin:0 auto;padding:0 24px;}
+
+/* ---- site header / nav ---- */
+.site-header{
+  position:sticky;top:0;z-index:60;padding:16px 0 0;margin:0 -24px 0;
+  background:rgba(11,15,26,0.72);backdrop-filter:blur(14px) saturate(140%);
+  -webkit-backdrop-filter:blur(14px) saturate(140%);
+}
+.site-header .wrap, .site-header{padding-left:0;padding-right:0;}
+.wordmark{
+  display:flex;align-items:baseline;justify-content:space-between;
+  border-bottom:1px solid var(--rule);padding:0 24px 16px;
+  flex-wrap:wrap;gap:10px;
+}
+.wordmark .name{
+  display:flex;align-items:center;
+  font-family:'Newsreader', serif;font-size:19px;font-weight:500;letter-spacing:0.01em;
+  text-decoration:none;
+}
+.wordmark .name em{font-style:italic;color:var(--amber);}
+.nav-links{display:flex;gap:18px;flex-wrap:wrap;}
+.nav-links a{
+  font-size:12.5px;color:var(--ink-dim);text-decoration:none;
+  border-bottom:1px solid transparent;padding-bottom:2px;
+}
+.nav-links a:hover{color:var(--ink);border-bottom-color:var(--amber-dim);}
+
+/* ---- generic headings ---- */
+h1{
+  font-family:'Newsreader', serif;font-weight:500;
+  font-size:clamp(32px,7vw,48px);line-height:1.14;letter-spacing:-0.015em;
+  margin:0 0 18px;
+}
+h2{
+  font-family:'Newsreader', serif;font-weight:500;
+  font-size:25px;line-height:1.3;margin:44px 0 14px;letter-spacing:-0.005em;
+}
+h3{
+  font-family:'Space Grotesk', sans-serif;font-weight:600;
+  font-size:17px;margin:28px 0 10px;color:var(--ink);
+}
+p{color:var(--ink-dim);font-size:15.5px;max-width:60ch;}
+p.lede{font-size:17px;max-width:46ch;margin:0 0 36px;color:var(--ink-dim);}
+
+/* ---- article prose ---- */
+.article-meta{
+  font-size:11px;color:var(--ink-faint);margin-bottom:14px;
+  letter-spacing:0.1em;padding-left:15px;position:relative;text-transform:uppercase;
+}
+.article-meta::before{
+  content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);
+  width:9px;height:1px;background:var(--amber-dim);
+}
+article.prose{padding:44px 0 20px;}
+article.prose h1{max-width:20ch;}
+article.prose p{color:var(--ink-dim);font-size:15.5px;max-width:62ch;}
+article.prose ul, article.prose ol{color:var(--ink-dim);font-size:15.5px;max-width:60ch;padding-left:20px;}
+article.prose li{margin-bottom:6px;}
+article.prose strong{color:var(--ink);}
+article.prose > p:first-of-type::first-letter{
+  font-family:'Newsreader', serif;font-style:italic;font-weight:600;
+  font-size:58px;line-height:0.78;color:var(--amber);
+  float:left;padding:6px 10px 0 0;
+}
+article.prose table{
+  width:100%;border-collapse:separate;border-spacing:0;margin:22px 0;font-size:14px;
+  background:var(--panel);border-radius:var(--radius-m);overflow:hidden;border:1px solid var(--rule);
+}
+article.prose th, article.prose td{
+  text-align:left;padding:12px 14px;border-bottom:1px solid var(--rule);color:var(--ink-dim);
+}
+article.prose tr:last-child td{border-bottom:none;}
+article.prose th{color:var(--ink);font-weight:600;font-size:12.5px;background:var(--card);letter-spacing:0.03em;}
+
+/* ---- recommend box (affiliate CTA) ---- */
+.recommend-box{
+  background:linear-gradient(160deg, var(--panel), var(--card));
+  border:1px solid var(--rule);border-radius:var(--radius-m);
+  padding:24px 24px 22px;margin:32px 0;box-shadow:var(--shadow-2);
+  position:relative;overflow:hidden;
+}
+.recommend-box::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg, var(--amber), transparent 80%);
+}
+.recommend-box .rb-label{
+  font-size:11px;color:var(--amber-dim);letter-spacing:0.08em;margin-bottom:8px;text-transform:uppercase;
+}
+.recommend-box .rb-name{font-size:18px;font-weight:600;margin-bottom:6px;font-family:'Newsreader', serif;}
+.recommend-box .rb-desc{font-size:14px;color:var(--ink-dim);margin-bottom:16px;max-width:56ch;}
+.recommend-box .rb-foot{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.recommend-box .rb-price{font-size:12px;color:var(--ink-faint);}
+.btn{
+  display:inline-block;background:var(--amber);color:#1B1300;text-decoration:none;
+  font-weight:600;font-size:13.5px;padding:11px 20px;border-radius:var(--radius-s);
+  box-shadow:0 4px 16px var(--amber-glow);
+}
+.btn:hover{background:#F2B458;transform:translateY(-1px);box-shadow:0 6px 22px var(--amber-glow);}
+.btn:active{transform:translateY(0);}
+.btn-ghost{
+  display:inline-block;border:1px solid var(--rule);color:var(--ink-dim);text-decoration:none;
+  font-size:13px;padding:10px 18px;border-radius:var(--radius-s);background:var(--panel);
+}
+.btn-ghost:hover{border-color:var(--amber-dim);color:var(--ink);transform:translateY(-1px);}
+
+/* ---- tool rows (used on home + comparison article) ---- */
+.tool-row{
+  display:grid;grid-template-columns:32px 1fr auto;gap:16px;align-items:start;
+  padding:22px 18px;border-radius:var(--radius-m);margin-bottom:8px;
+}
+.tool-row:hover{background:var(--card);}
+.tool-row .num{font-family:'Newsreader', serif;font-style:italic;color:var(--ink-faint);font-size:15px;padding-top:2px;}
+.tool-row .info .t-name{font-size:16px;font-weight:500;margin-bottom:4px;}
+.tool-row .info .t-desc{font-size:13.5px;color:var(--ink-dim);max-width:44ch;}
+.tool-row .info .t-price{font-size:12px;color:var(--ink-faint);margin-top:6px;}
+.tool-row a.visit{font-size:13px;color:var(--amber);text-decoration:none;white-space:nowrap;border-bottom:1px solid transparent;padding-top:4px;}
+.tool-row a.visit:hover{border-bottom-color:var(--amber);}
+
+/* ---- article hub grid ---- */
+.article-grid{display:flex;flex-direction:column;gap:10px;counter-reset:article-index;}
+.article-card{
+  padding:22px 20px 22px 46px;border:1px solid var(--rule);border-radius:var(--radius-m);
+  text-decoration:none;color:inherit;background:var(--panel);
+  display:block;position:relative;counter-increment:article-index;
+}
+.article-card:hover{background:var(--card-hover);border-color:var(--amber-dim);transform:translateY(-2px);box-shadow:var(--shadow-2);}
+.article-card::before{
+  content:counter(article-index, decimal-leading-zero);
+  position:absolute;left:18px;top:24px;
+  font-family:'Newsreader', serif;font-style:italic;color:var(--ink-faint);font-size:14px;
+}
+.article-card .ac-kind{font-size:11px;color:var(--amber-dim);margin-bottom:8px;letter-spacing:0.06em;text-transform:uppercase;}
+.article-card .ac-title{font-family:'Newsreader', serif;font-size:19px;font-weight:500;margin-bottom:6px;color:var(--ink);}
+.article-card .ac-desc{font-size:13.5px;color:var(--ink-dim);max-width:56ch;}
+.article-card:hover .ac-title{color:var(--amber);}
+
+/* ---- newsletter capture ---- */
+.newsletter{
+  background:linear-gradient(160deg, var(--card), var(--panel));border:1px solid var(--rule);
+  border-radius:var(--radius-m);padding:26px 24px;margin:40px 0;box-shadow:var(--shadow-1);
+  display:flex;flex-direction:column;gap:12px;
+}
+.newsletter .nl-title{font-size:15.5px;font-weight:600;font-family:'Newsreader', serif;}
+.newsletter .nl-desc{font-size:13.5px;color:var(--ink-dim);}
+.newsletter form{display:flex;gap:10px;flex-wrap:wrap;}
+.newsletter input[type=email]{
+  flex:1;min-width:180px;background:var(--bg);border:1px solid var(--rule);border-radius:var(--radius-s);
+  color:var(--ink);padding:11px 14px;font-family:'Space Grotesk', sans-serif;font-size:14px;
+}
+.newsletter input[type=email]:focus{border-color:var(--amber-dim);box-shadow:0 0 0 3px var(--amber-glow);outline:none;}
+.newsletter button{
+  background:var(--amber);color:#1B1300;border:none;border-radius:var(--radius-s);padding:11px 20px;
+  font-weight:600;font-size:13.5px;cursor:pointer;box-shadow:0 4px 16px var(--amber-glow);
+}
+.newsletter button:hover{background:#F2B458;transform:translateY(-1px);}
+
+/* ---- masthead accent / scroll progress ---- */
+body::before{
+  content:"";position:fixed;top:0;left:0;right:0;height:2px;z-index:80;pointer-events:none;
+  width:100%;
+  background:linear-gradient(90deg, transparent, var(--amber) 35%, var(--amber) 65%, transparent);
+}
+body.has-progress::before{
+  right:auto;width:var(--scroll-pct, 0%);
+  background:var(--amber);
+  transition:width .08s linear;
+}
+
+/* ---- bottom tab bar (mobile app-style nav) ---- */
+body{padding-bottom:78px;}
+.tab-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:70;
+  display:flex;justify-content:space-around;align-items:center;
+  background:rgba(11,15,26,0.85);backdrop-filter:blur(14px) saturate(140%);
+  -webkit-backdrop-filter:blur(14px) saturate(140%);
+  border-top:1px solid var(--rule);
+  padding:9px 8px calc(9px + env(safe-area-inset-bottom));
+}
+.tab-bar a{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  text-decoration:none;color:var(--ink-faint);font-size:10px;letter-spacing:0.02em;
+  flex:1;padding:4px 0;
+}
+.tab-bar a svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.6;}
+.tab-bar a.active{color:var(--amber);}
+.tab-bar a.active svg{stroke:var(--amber);}
+.tab-bar a:hover{color:var(--ink);}
+
+/* ---- signal meter badge (equalizer-style icon) ---- */
+.signal-meter{display:inline-flex;align-items:flex-end;gap:2px;height:11px;margin-right:8px;vertical-align:middle;}
+.signal-meter i{display:block;width:3px;background:var(--amber-dim);border-radius:1px;font-style:normal;}
+.signal-meter i:nth-child(1){height:40%;}
+.signal-meter i:nth-child(2){height:70%;}
+.signal-meter i:nth-child(3){height:100%;background:var(--amber);}
+.signal-meter i:nth-child(4){height:55%;}
+
+/* ---- ornament divider ---- */
+.ornament{display:flex;align-items:center;justify-content:center;gap:14px;margin:52px 0;}
+.ornament::before, .ornament::after{content:"";flex:1;height:1px;background:var(--rule);max-width:180px;}
+.ornament span{font-size:11px;color:var(--amber-dim);letter-spacing:0.1em;}
+
+/* ---- hero atmosphere ---- */
+.hero{position:relative;padding-top:8px;}
+.hero::before{
+  content:"";position:absolute;top:-30px;right:-60px;width:320px;height:320px;
+  background-image:radial-gradient(circle, rgba(232,163,61,0.18) 1.4px, transparent 1.4px);
+  background-size:20px 20px;
+  mask-image:radial-gradient(circle, black 35%, transparent 72%);
+  -webkit-mask-image:radial-gradient(circle, black 35%, transparent 72%);
+  pointer-events:none;z-index:0;
+}
+.hero > *{position:relative;z-index:1;}
+.hero-accent{margin:8px 0 6px;opacity:0.9;}
+
+.cite-block{
+  border-left:3px solid var(--amber-dim);padding:10px 20px 10px 30px;margin:32px 0;position:relative;
+  background:var(--panel);border-radius:0 var(--radius-m) var(--radius-m) 0;
+}
+.cite-block::before{
+  content:"\201C";position:absolute;left:4px;top:-4px;
+  font-family:'Newsreader', serif;font-size:44px;color:var(--amber-dim);line-height:1;opacity:0.7;
+}
+.cite-block p{color:var(--ink);font-size:15px;max-width:56ch;margin:0 0 0 4px;}
+.cite-block .cite-source{font-size:12px;color:var(--ink-faint);margin-top:8px;margin-left:4px;}
+
+.sources-list{
+  border-top:1px solid var(--rule);margin-top:36px;padding-top:16px;
+}
+.sources-list .sl-label{font-size:11px;color:var(--ink-faint);margin-bottom:10px;letter-spacing:0.06em;text-transform:uppercase;}
+.sources-list ul{list-style:none;padding:0;margin:0;}
+.sources-list li{font-size:12.5px;color:var(--ink-faint);margin-bottom:6px;}
+
+/* ---- book cards ---- */
+.book-card{
+  display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start;
+  padding:22px;border:1px solid var(--rule);border-radius:var(--radius-m);background:var(--panel);
+  margin-bottom:12px;
+}
+.book-card:hover{border-color:var(--amber-dim);box-shadow:var(--shadow-2);transform:translateY(-2px);}
+.book-card .b-spine{
+  width:48px;height:76px;background:linear-gradient(180deg, var(--card), var(--panel));
+  border:1px solid var(--rule);border-left:3px solid var(--amber-dim);border-radius:4px;
+  display:flex;align-items:center;justify-content:center;
+  writing-mode:vertical-rl;text-orientation:mixed;
+  font-family:'Newsreader', serif;font-style:italic;color:var(--amber-dim);font-size:11px;
+  letter-spacing:0.05em;flex-shrink:0;
+}
+.book-card .b-title{font-family:'Newsreader', serif;font-size:18px;font-weight:500;margin-bottom:4px;}
+.book-card .b-author{font-size:13px;color:var(--ink-faint);margin-bottom:10px;}
+.book-card .b-desc{font-size:14px;color:var(--ink-dim);max-width:52ch;margin-bottom:12px;}
+
+/* ---- related links ---- */
+.related{padding:24px 0 60px;border-top:1px solid var(--rule);margin-top:44px;}
+.related .rel-label{font-size:11px;color:var(--ink-faint);margin-bottom:14px;letter-spacing:0.06em;text-transform:uppercase;}
+.related a{
+  display:block;font-size:14px;color:var(--ink-dim);text-decoration:none;margin-bottom:6px;
+  padding:10px 14px;border-radius:var(--radius-s);margin-left:-14px;
+}
+.related a:hover{color:var(--amber);background:var(--panel);}
+
+footer.site-footer{border-top:1px solid var(--rule);padding:36px 0 40px;}
+footer.site-footer .footer-grid{
+  display:flex;flex-wrap:wrap;gap:32px;justify-content:space-between;margin-bottom:24px;
+}
+footer.site-footer .footer-brand{max-width:280px;}
+footer.site-footer .footer-brand .fb-name{
+  font-family:'Newsreader', serif;font-style:italic;font-size:16px;color:var(--ink);margin-bottom:8px;
+}
+footer.site-footer .footer-brand p{font-size:12.5px;color:var(--ink-faint);margin:0;}
+footer.site-footer .footer-cols{display:flex;gap:48px;flex-wrap:wrap;}
+footer.site-footer .footer-col .fc-label{font-size:11px;color:var(--ink-faint);letter-spacing:0.06em;margin-bottom:10px;text-transform:uppercase;}
+footer.site-footer .footer-col a{display:block;font-size:13px;color:var(--ink-dim);text-decoration:none;margin-bottom:7px;}
+footer.site-footer .footer-col a:hover{color:var(--amber);}
+footer.site-footer .footer-bottom{
+  border-top:1px solid var(--rule);padding-top:16px;
+  display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;
+}
+footer.site-footer .footer-bottom p{font-size:11.5px;color:var(--ink-faint);margin:0;max-width:70ch;}
+
+/* ---- brand mark ---- */
+.brand-mark{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:23px;height:23px;background:linear-gradient(160deg, var(--amber), var(--amber-dim));
+  border-radius:7px;
+  font-family:'Newsreader', serif;font-style:italic;font-weight:600;font-size:12px;color:#1B1300;
+  margin-right:8px;position:relative;top:-1px;box-shadow:0 2px 8px var(--amber-glow);
+}
+
+/* ---- focus states ---- */
+h2[id], h3[id]{scroll-margin-top:88px;}
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible{
+  outline:2px solid var(--amber);outline-offset:2px;border-radius:4px;
+}
+
+@media (max-width:560px){
+  footer.site-footer .footer-grid{gap:24px;}
+  footer.site-footer .footer-cols{gap:32px;}
+}
+@media (max-width:520px){
+  .tool-row{grid-template-columns:24px 1fr;padding:18px 14px;}
+  .tool-row a.visit{grid-column:2;}
+  .article-card{padding:20px 16px 20px 42px;}
+}
+
+.breadcrumb{font-size:12px;color:var(--ink-faint);margin:22px 0 0;}
+.breadcrumb a{color:var(--ink-faint);text-decoration:none;}
+.breadcrumb a:hover{color:var(--amber);}
+.toc{
+  background:var(--panel);border:1px solid var(--rule);border-radius:var(--radius-m);
+  padding:20px 22px;margin:26px 0 8px;box-shadow:var(--shadow-1);
+}
+.toc .toc-label{font-size:11px;color:var(--ink-faint);margin-bottom:10px;letter-spacing:0.06em;text-transform:uppercase;}
+.toc ol{margin:0;padding-left:18px;}
+.toc li{font-size:13.5px;margin-bottom:6px;}
+.toc a{color:var(--ink-dim);text-decoration:none;}
+.toc a:hover{color:var(--amber);}
+.faq-item{border-top:1px solid var(--rule);padding:20px 0;}
+.faq-item:last-child{border-bottom:1px solid var(--rule);}
+.faq-q{font-weight:600;font-size:15px;color:var(--ink);margin-bottom:8px;}
+.faq-a{font-size:14px;color:var(--ink-dim);margin:0;}
+
+/* ---- purpose selector ---- */
+.purpose-grid{display:grid;grid-template-columns:1fr;gap:10px;margin:18px 0;}
+.purpose-card{
+  display:block;text-align:left;background:var(--panel);border:1px solid var(--rule);border-radius:var(--radius-m);
+  padding:16px 18px;cursor:pointer;color:inherit;font-family:'Space Grotesk', sans-serif;
+}
+.purpose-card:hover, .purpose-card.active{border-color:var(--amber-dim);background:var(--card-hover);}
+.purpose-card.active{box-shadow:0 0 0 1px var(--amber-dim);}
+.purpose-card .pc-title{font-family:'Newsreader', serif;font-size:16px;color:var(--ink);margin-bottom:4px;}
+.purpose-card .pc-desc{font-size:12.5px;color:var(--ink-faint);}
+
+/* ---- source block (bidirectional jump target) ---- */
+.src-panel{
+  background:var(--bg);border:1px solid var(--rule);border-radius:var(--radius-m);
+  padding:16px;max-height:420px;overflow-y:auto;font-size:13.5px;line-height:1.7;
+}
+.src-block{padding:6px 8px;border-radius:6px;margin-bottom:4px;cursor:pointer;position:relative;}
+.src-block:hover{background:var(--card);}
+.src-block.status-covered{border-left:3px solid #8FD18F;}
+.src-block.status-partial{border-left:3px solid var(--amber);}
+.src-block.status-uncovered{border-left:3px solid var(--rule);}
+.src-block.flash{background:var(--amber-glow);}
+.cq-item.flash{background:var(--amber-glow);border-radius:8px;}
+.src-block .insert-marker{
+  display:block;font-size:11px;color:var(--amber);border:1px dashed var(--amber-dim);border-radius:6px;
+  padding:6px 8px;margin-top:6px;cursor:pointer;
+}
+
+/* ---- coverage map ---- */
+.coverage-theme{border:1px solid var(--rule);border-radius:var(--radius-m);padding:16px 18px;margin-bottom:12px;background:var(--panel);}
+.coverage-theme .ct-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;}
+.coverage-theme .ct-title{font-family:'Newsreader', serif;font-size:16px;}
+.coverage-badge{font-size:10.5px;padding:4px 10px;border-radius:20px;letter-spacing:0.03em;white-space:nowrap;}
+.coverage-badge.covered{background:rgba(143,209,143,0.14);color:#8FD18F;}
+.coverage-badge.partial{background:rgba(232,163,61,0.14);color:var(--amber);}
+.coverage-badge.uncovered{background:rgba(224,138,138,0.14);color:#E08A8A;}
+.cq-item{border-top:1px solid var(--rule);padding:10px 0;font-size:13.5px;}
+.cq-item:first-child{border-top:none;}
+.cq-q{color:var(--ink);margin-bottom:4px;}
+.cq-verdict{font-size:11px;color:var(--ink-faint);margin-bottom:4px;}
+.cq-jump{font-size:12px;color:var(--amber);text-decoration:none;cursor:pointer;}
+
+/* ---- persona / simulation disclaimer ---- */
+.sim-disclaimer{
+  font-size:12px;color:var(--ink-faint);background:var(--panel);border:1px solid var(--rule);
+  border-radius:var(--radius-s);padding:10px 14px;margin:14px 0;
+}
+
+/* ---- battlefield ---- */
+.battlefield-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0;}
+.bf-quad{border:1px solid var(--rule);border-radius:var(--radius-m);padding:14px;background:var(--panel);}
+.bf-quad .bf-label{font-size:11px;color:var(--ink-faint);margin-bottom:8px;}
+.bf-quad .bf-count{font-family:'Newsreader', serif;font-size:26px;color:var(--amber);margin-bottom:6px;}
+.bf-quad ul{margin:0;padding-left:16px;font-size:12px;color:var(--ink-dim);}
+@media (max-width:480px){.battlefield-grid{grid-template-columns:1fr;}}
+
+.steal10-item{border-top:1px solid var(--rule);padding:14px 0;}
+.steal10-item:first-child{border-top:none;}
+.steal10-q{color:var(--ink);font-size:14px;margin-bottom:6px;}
+.steal10-detail{font-size:12.5px;color:var(--ink-dim);}
+.steal10-detail div{margin-bottom:3px;}
+
+/* ---- diagnosis screens ---- */
+.diag-screen{padding:20px 0 48px;border-top:1px solid var(--rule);margin-top:8px;}
+.diag-screen .ds-kicker{font-size:11px;color:var(--amber-dim);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px;}
+.diag-screen h2{margin-top:0;}
+
+/* ---- stat bar (trust signals) ---- */
+.stat-bar{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:20px;
+  background:var(--panel);border:1px solid var(--rule);border-radius:var(--radius-m);
+  padding:22px 20px;margin:32px 0;box-shadow:var(--shadow-1);
+}
+.stat-bar .stat{text-align:center;}
+.stat-bar .stat-num{
+  font-family:'Newsreader', serif;font-weight:600;font-size:26px;color:var(--amber);
+  line-height:1.1;
+}
+.stat-bar .stat-label{font-size:11px;color:var(--ink-faint);margin-top:6px;letter-spacing:0.03em;}
+
+/* ---- banner CTA (bold, recurring mid-article) ---- */
+.banner-cta{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  background:linear-gradient(120deg, var(--amber-dim), var(--amber));
+  border-radius:var(--radius-m);padding:20px 24px;margin:34px 0;
+  box-shadow:0 10px 30px var(--amber-glow);
+}
+.banner-cta .bc-text{color:#1B1300;}
+.banner-cta .bc-title{font-family:'Newsreader', serif;font-weight:600;font-size:16px;margin-bottom:2px;}
+.banner-cta .bc-sub{font-size:12.5px;opacity:0.85;}
+.banner-cta a{
+  display:inline-block;background:#1B1300;color:var(--amber);text-decoration:none;
+  font-weight:600;font-size:13.5px;padding:11px 20px;border-radius:var(--radius-s);white-space:nowrap;
+}
+.banner-cta a:hover{background:#2A1E00;transform:translateY(-1px);}
+
+/* ---- tappable glossary terms ---- */
+.term{
+  color:var(--amber);border-bottom:1px dotted var(--amber-dim);cursor:pointer;
+  position:relative;
+}
+.term-viewed{color:var(--ink-dim);border-bottom-color:var(--rule);}
+.term-tooltip{
+  display:block;position:absolute;left:0;top:100%;margin-top:6px;z-index:40;
+  background:var(--card);border:1px solid var(--rule);border-radius:var(--radius-m);
+  padding:13px 15px;font-size:13px;color:var(--ink-dim);width:230px;max-width:70vw;
+  box-shadow:var(--shadow-2);white-space:normal;line-height:1.55;
+}
+.term-tooltip .tt-def{display:block;margin-bottom:9px;}
+.term-tooltip .tt-more{color:var(--amber);text-decoration:none;font-size:12px;}
+
+/* ---- confidence labels (Confirmed / Observed / Conceptual Model / Hypothesis) ---- */
+.confidence{
+  display:inline-block;font-size:10.5px;letter-spacing:0.05em;text-transform:uppercase;
+  padding:3px 9px;border-radius:5px;margin-bottom:10px;font-weight:600;
+}
+.confidence.confirmed{background:rgba(120,190,120,0.14);color:#8FD18F;}
+.confidence.observed{background:rgba(232,163,61,0.14);color:var(--amber);}
+.confidence.conceptual{background:rgba(140,160,220,0.14);color:#A9B8E8;}
+.confidence.hypothesis{background:rgba(200,120,120,0.14);color:#E08A8A;}
+
+/* ---- direct answer box ---- */
+.direct-answer{
+  background:var(--panel);border-left:3px solid var(--amber);border-radius:0 var(--radius-m) var(--radius-m) 0;
+  padding:16px 20px;margin:20px 0 32px;
+}
+.direct-answer .da-label{font-size:10.5px;color:var(--amber-dim);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;}
+.direct-answer p{color:var(--ink);margin:0;font-size:15.5px;}
+
+/* ---- kicker (sokuteki-meidai) above formal title ---- */
+.kicker{
+  font-family:'Newsreader', serif;font-style:italic;color:var(--ink-faint);
+  font-size:16px;margin:0 0 6px;
+}
+
+/* ---- section hub cards (learn/geo/ai-search/etc index pages) ---- */
+.section-nav{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:28px 0 40px;}
+.section-nav a{
+  display:block;padding:18px 16px;border:1px solid var(--rule);border-radius:var(--radius-m);
+  background:var(--panel);text-decoration:none;color:inherit;
+}
+.section-nav a:hover{border-color:var(--amber-dim);background:var(--card-hover);transform:translateY(-2px);box-shadow:var(--shadow-2);}
+.section-nav .sn-title{font-family:'Newsreader', serif;font-size:15.5px;color:var(--ink);margin-bottom:4px;}
+.section-nav .sn-desc{font-size:12px;color:var(--ink-faint);}
+@media (max-width:480px){.section-nav{grid-template-columns:1fr;}}
+
+/* ---- tentacle visualizer ---- */
+.tentacle-wrap{
+  background:var(--panel);border:1px solid var(--rule);border-radius:var(--radius-m);
+  padding:18px;margin:28px 0;box-shadow:var(--shadow-1);
+}
+.tentacle-input{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+.tentacle-input select{
+  flex:1;min-width:160px;background:var(--bg);border:1px solid var(--rule);border-radius:var(--radius-s);
+  color:var(--ink);padding:10px 12px;font-family:'Space Grotesk', sans-serif;font-size:14px;
+}
+.tentacle-input button{
+  background:var(--amber);color:#1B1300;border:none;border-radius:var(--radius-s);
+  padding:10px 18px;font-weight:600;font-size:13.5px;cursor:pointer;
+}
+.tentacle-svg-box{width:100%;overflow-x:auto;}
+.tentacle-svg-box svg{width:100%;height:auto;min-width:560px;}
+.tentacle-caption{font-size:11px;color:var(--ink-faint);margin-top:10px;text-align:center;}
+
+/* ---- comparison table (data-driven) ---- */
+.dt-table{width:100%;border-collapse:collapse;margin:20px 0;font-size:13.5px;}
+.dt-table th, .dt-table td{text-align:left;padding:11px 10px;border-bottom:1px solid var(--rule);}
+.dt-table th{color:var(--ink);font-size:11.5px;letter-spacing:0.03em;background:var(--card);}
+.dt-table td{color:var(--ink-dim);}
+.dt-table .aff-pending{color:var(--ink-faint);font-style:italic;font-size:12px;}
+
+</style>
+<style>
+  .hero{padding:40px 0 8px;}
+  .hero h1{max-width:14ch;}
+  .tool{
+    background:linear-gradient(160deg, var(--panel), var(--card));border:1px solid var(--rule);
+    border-radius:var(--radius-l);padding:26px;box-shadow:var(--shadow-3);
+  }
+  .tool label{display:block;font-size:13px;color:var(--ink-dim);margin-bottom:10px;}
+  textarea{
+    width:100%;min-height:96px;resize:vertical;background:var(--bg);border:1px solid var(--rule);
+    border-radius:var(--radius-m);color:var(--ink);font-family:'Space Grotesk', sans-serif;font-size:15px;
+    padding:14px;outline:none;
+  }
+  textarea:focus{border-color:var(--amber-dim);box-shadow:0 0 0 3px var(--amber-glow);}
+  textarea::placeholder{color:var(--ink-faint);}
+  .tool-foot{display:flex;align-items:center;justify-content:space-between;margin-top:14px;flex-wrap:wrap;gap:10px;}
+  .quota{font-size:12px;color:var(--ink-faint);}
+  button.generate{
+    background:var(--amber);color:#1B1300;border:none;border-radius:var(--radius-s);padding:12px 22px;
+    font-family:'Space Grotesk', sans-serif;font-weight:600;font-size:14px;cursor:pointer;
+    box-shadow:0 4px 16px var(--amber-glow);
+  }
+  button.generate:hover:not(:disabled){background:#F2B458;transform:translateY(-1px);}
+  button.generate:disabled{background:var(--rule);color:var(--ink-faint);cursor:not-allowed;box-shadow:none;}
+  .output{margin-top:18px;border-top:1px solid var(--rule);padding-top:16px;display:none;}
+  .output.show{display:block;}
+  .output-label{font-size:12px;color:var(--ink-faint);display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+  .copy-btn{
+    background:none;border:1px solid var(--rule);color:var(--ink-dim);font-size:12px;
+    font-family:'Space Grotesk', sans-serif;padding:6px 12px;border-radius:var(--radius-s);cursor:pointer;
+  }
+  .copy-btn:hover{border-color:var(--amber-dim);color:var(--ink);}
+  .output-body{background:var(--bg);border:1px solid var(--rule);border-radius:var(--radius-m);padding:16px;font-size:14.5px;color:var(--ink);white-space:pre-wrap;min-height:40px;}
+  .status{font-size:13px;color:var(--ink-faint);margin-top:10px;}
+  .status.err{color:#D97757;}
+  .why{padding:60px 0 8px;}
+  .why h2{max-width:20ch;}
+  .measure{padding:8px 0 20px;}
+  .measure .sub{color:var(--ink-faint);font-size:14px;margin:0 0 24px;}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Signal",
+  "url": "https://signal-geo.example/",
+  "description": "GEO（生成AI検索最適化）とSEOの両方を扱う専門メディア。"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Signal",
+  "url": "https://signal-geo.example/"
+}
+</script>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="site-header">
+    <div class="wordmark">
+      <a class="name" href="index.html"><span class="brand-mark">S</span>Sig<em>nal</em></a>
+      <nav class="nav-links">
+        <a href="articles.html">記事</a>
+        <a href="comparisons/geo-tools-compare.html">ツール比較</a>
+        <a href="editorial-policy.html">編集方針</a>
+        <a href="references.html">参考文献</a>
+        <a href="glossary/index.html">用語集</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <svg class="hero-accent" width="120" height="28" viewBox="0 0 120 28" xmlns="http://www.w3.org/2000/svg">
+      <polyline points="0,20 14,20 20,6 26,26 32,14 38,20 120,20" fill="none" stroke="#E8A33D" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <h1>100人の仮想AI検索者に、<br>あなたのコンテンツをテストする。</h1>
+    <p class="lede">検索意図も知識量も違う100人が、あなたのサイトに質問を投げかけたら——どこまで答えられるか。何を見逃しているか。原文のどこを直せばいいか。</p>
+
+    <div class="tool">
+      <label style="display:block;font-size:13px;color:var(--ink-dim);margin-bottom:10px;">まず、何をテストしたいか選んでください</label>
+      <div class="purpose-grid" id="purposeGrid">
+        <button class="purpose-card active" data-purpose="site">
+          <div class="pc-title">① サイト全体</div>
+          <div class="pc-desc">複数ページの本文をまとめて貼り付け、サイト全体としてどの質問領域をカバーできているかを評価します。</div>
+        </button>
+        <button class="purpose-card" data-purpose="page">
+          <div class="pc-title">② 1ページ／記事</div>
+          <div class="pc-desc">1ページぶんの本文から、回答性・具体性・根拠・情報不足を評価します。</div>
+        </button>
+        <button class="purpose-card" data-purpose="draft">
+          <div class="pc-title">③ 公開前コンテンツ</div>
+          <div class="pc-desc">文章の貼り付け・ファイルから、公開後を想定した内容面の回答範囲を評価します（robots等の技術診断は対象外）。</div>
+        </button>
+      </div>
+
+      <div id="inputArea">
+        <div class="diag-input-panel" id="panelUrl">
+          <label for="siteUrl" style="display:block;font-size:12.5px;color:var(--ink-faint);margin-bottom:8px;">参考URL（任意・表示用ラベル）</label>
+          <input type="text" id="siteUrl" placeholder="https://example.com" style="width:100%;background:var(--bg);border:1px solid var(--rule);border-radius:var(--radius-m);color:var(--ink);padding:13px 14px;font-family:'Space Grotesk', sans-serif;font-size:15px;">
+        </div>
+        <div class="diag-input-panel" id="panelPaste">
+          <label for="pasteContent" style="display:block;font-size:12.5px;color:var(--ink-faint);margin-bottom:8px;" id="pasteLabel">本文（HTMLソースでも通常の文章でも可）</label>
+          <textarea id="pasteContent" placeholder="診断したい文章を貼り付けてください（サイト全体を選んだ場合は、複数ページの本文を「---」で区切って貼り付けてください）" style="width:100%;min-height:160px;background:var(--bg);border:1px solid var(--rule);border-radius:var(--radius-m);color:var(--ink);padding:14px;font-family:'Space Grotesk', sans-serif;font-size:14.5px;"></textarea>
+        </div>
+        <div class="diag-input-panel" id="panelFile">
+          <label for="fileInput" style="display:block;font-size:12.5px;color:var(--ink-faint);margin:12px 0 8px;">またはファイル（.html / .txt）</label>
+          <input type="file" id="fileInput" accept=".html,.htm,.txt" style="width:100%;color:var(--ink-dim);font-size:13px;">
+        </div>
+
+        <div class="diag-input-panel" id="panelCompetitor">
+          <label for="competitorContent" style="display:block;font-size:12.5px;color:var(--ink-faint);margin:14px 0 8px;">競合の本文（任意・Battlefield比較を行う場合に貼り付け）</label>
+          <textarea id="competitorContent" placeholder="競合ページの本文を貼り付け（空欄でスキップ）" style="width:100%;min-height:100px;background:var(--bg);border:1px solid var(--rule);border-radius:var(--radius-m);color:var(--ink);padding:12px 14px;font-family:'Space Grotesk', sans-serif;font-size:14px;"></textarea>
+        </div>
+
+        <p style="font-size:11px;color:var(--ink-faint);margin-top:4px;">※ ブラウザの仕様上、URLだけを入力して外部サイトを自動取得することはできません（セキュリティ制限）。実際に分析するのは、貼り付けられた本文またはファイルの内容です。</p>
+      </div>
+
+      <div class="tool-foot">
+        <span class="quota" id="quota">無料版：本日あと5回／テスト人数15人・文字数5,000まで</span>
+        <button class="generate" id="genBtn">100人テストを実行する</button>
+      </div>
+      <div class="status" id="statusMsg"></div>
+    </div>
+  </section>
+
+  <div id="resultScreens" hidden></div>
+
+  <div class="ornament"><span>◆</span></div>
+
+  <section class="why">
+    <h2>「見られる」だけでは足りない</h2>
+    <p>AI検索は要約して答えを返します。ランキング上位に出るだけでなく、AIが引用したくなる形で書かれているかが分かれ目になります。上の診断は、Entity明確性・検索意図・Retrievalされやすさ・Passage単体での理解性・Citationしやすさ・情報密度の6観点からその状態を確認します。</p>
+    <p>ただし「必ず引用される」ことを保証するものではありません。診断結果をもとに何を直し、どのツールで計測を続けるかまでを、このサイトで一貫して提示します。</p>
+  </section>
+
+  <div class="ornament"><span>◆</span></div>
+
+  <section style="padding:0 0 8px;">
+    <h2>もっと詳しく調べる</h2>
+    <p class="sub" style="margin-bottom:20px;">診断結果を深掘りしたいときに</p>
+  </section>
+  <section class="section-nav">
+    <a href="comparisons/index.html"><div class="sn-title">Product Comparisons</div><div class="sn-desc">診断結果別のおすすめツール一覧</div></a>
+    <a href="geo/index.html"><div class="sn-title">GEO Guides</div><div class="sn-desc">改善策の背景を理解する</div></a>
+    <a href="ai-search/index.html"><div class="sn-title">AI Search</div><div class="sn-desc">AI検索の仕組みを理解する</div></a>
+    <a href="glossary/index.html"><div class="sn-title">Glossary</div><div class="sn-desc">診断結果に出てくる用語の意味</div></a>
+  </section>
+
+  <div class="ornament"><span>◆</span></div>
+
+  <section style="padding:8px 0 8px;">
+    <h2>参考記事</h2>
+    <p class="sub">診断の裏側にある考え方を、もっと詳しく</p>
+  </section>
+
+  <section class="article-grid">
+    <a class="article-card" href="ai-search/tentacle.html">
+      <div class="ac-kind">AI SEARCH ／ 必読</div>
+      <div class="ac-title">AI検索の触手の伸ばし方</div>
+      <div class="ac-desc">1つの質問がどう複数方向へ探索を広げるか。Tentacle Visualizerで確認できます。</div>
+    </a>
+    <a class="article-card" href="geo/what-is-geo.html">
+      <div class="ac-kind">解説</div>
+      <div class="ac-title">GEOとは何か？SEOとの違いをやさしく解説</div>
+      <div class="ac-desc">GoogleとForresterの見解を引用しながら、GEOをSEOの拡張として位置づけます。</div>
+    </a>
+    <a class="btn-ghost" href="articles.html" style="margin-top:8px;display:inline-block;">記事一覧をすべて見る →</a>
+  </section>
+
+  <div class="ornament"><span>◆</span></div>
+
+  <section style="padding:8px 0 8px;">
+    <h2>このサイトの立場</h2>
+    <div class="cite-block">
+      <p>Googleは2026年公開の公式ドキュメントで、生成AI向けの最適化は検索体験全体の最適化であり、本質的にはSEOだという見解を示しています。このサイトも、GEOを独立した新しい分野ではなくSEOの拡張として扱っています。</p>
+      <div class="cite-source">詳しくは<a href="editorial-policy.html" style="color:var(--amber);">編集方針ページ</a>で解説しています</div>
+    </div>
+    <p style="font-size:13px;">記事の執筆にあたっては、Siege Media創業者Ross Hudgens氏の著書など、実務経験を持つ専門家の文献を<a href="references.html" style="color:var(--amber);">参考文献ページ</a>で紹介しています。</p>
+  </section>
+
+  <div class="newsletter">
+    <div class="nl-title">週1本、GEOの実践メモを届けます</div>
+    <div class="nl-desc">新しいツールや事例が出たときだけ配信します。売り込みはしません。</div>
+    <form onsubmit="event.preventDefault(); this.querySelector('button').textContent='登録しました';">
+      <input type="email" placeholder="メールアドレス" required>
+      <button type="submit">登録する</button>
+    </form>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="fb-name">Sig<em>nal</em></div>
+        <p>GEO（生成AI検索最適化）をSEOの拡張として扱う専門メディア。ツール比較・データ分析・実践ガイドをまとめています。</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <div class="fc-label">読む</div>
+          <a href="articles.html">記事一覧</a>
+          <a href="glossary/index.html">用語集</a>
+          <a href="references.html">参考文献</a>
+        </div>
+        <div class="footer-col">
+          <div class="fc-label">ツール</div>
+          <a href="index.html">プロンプト生成</a>
+          <a href="comparisons/geo-tools-compare.html">ツール比較</a>
+        </div>
+        <div class="footer-col">
+          <div class="fc-label">サイトについて</div>
+          <a href="editorial-policy.html">編集方針</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>本サイトはアフィリエイト広告を含みます。紹介リンクの成果に応じて報酬を得ています。</p>
+      <p>© 2026 Signal</p>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  const MAX_USES = 5;
+  const FREE_PERSONA_CAP = 15;
+  const USAGE_KEY = 'signal_100test_usage';
+
+  // ---- DOM refs ----
+  const purposeGrid = document.getElementById('purposeGrid');
+  const pasteLabel = document.getElementById('pasteLabel');
+  const urlEl = document.getElementById('siteUrl');
+  const pasteEl = document.getElementById('pasteContent');
+  const fileEl = document.getElementById('fileInput');
+  const competitorEl = document.getElementById('competitorContent');
+  const genBtn = document.getElementById('genBtn');
+  const quotaEl = document.getElementById('quota');
+  const statusMsg = document.getElementById('statusMsg');
+  const resultScreens = document.getElementById('resultScreens');
+
+  let currentPurpose = 'site';
+  let lastResult = null;
+  let lastBlocks = [];
+
+  const PASTE_PLACEHOLDERS = {
+    site: '複数ページの本文を「---」で区切って貼り付けてください（例：トップページ本文 --- サービス紹介ページ本文）',
+    page: '診断したい1ページぶんの本文を貼り付けてください',
+    draft: '公開前の文章を貼り付けてください'
+  };
+  const PASTE_LABELS = {
+    site: '本文（複数ページを「---」区切りで貼り付け）',
+    page: '本文（HTMLソースでも通常の文章でも可）',
+    draft: '本文（HTMLソースでも通常の文章でも可）'
+  };
+
+  // サーバーサイド(/api/*)がAnthropic APIキー付きで動いていればtrueのまま。
+  // 明示的な疎通チェックはせず、実行時にAPIエラーが返ればそこでメッセージを出す。
+  let apiAvailable = true;
+
+  async function callApi(path, payload){
+    const res = await fetch(path, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    let body;
+    try{ body = await res.json(); }
+    catch(e){ throw { code: 'invalid_json', message: 'サーバー応答の解析に失敗しました' }; }
+    if(!res.ok){
+      throw { code: body.code || ('http_' + res.status), message: body.error || 'リクエストに失敗しました' };
+    }
+    return body;
+  }
+
+  const RECO_CATALOG = {
+    ai_visibility: { title: 'AI検索での引用状況を計測する', desc: '自社がAIの回答にどのくらい引用されているか、まだ確認したことがない場合に。', href: 'comparisons/index.html', cta: '計測ツールを比較する' },
+    content_writing: { title: '文章の情報密度を上げる', desc: '抽象的な表現が多く、AIが根拠として使いにくい文章になっている場合に。', href: 'geo/geo-writing.html', cta: '書き方を見る' },
+    structured_data: { title: '構造化データを実装する', desc: 'FAQや商品情報が機械可読な形になっていない場合に。', href: 'geo/structured-data.html', cta: '実装方法を見る' },
+    hosting_speed: { title: '表示速度を改善する', desc: 'ページの表示が遅く、クローラビリティに影響している可能性がある場合に。', href: 'comparisons/kinsta-vs-bluehost.html', cta: 'ホスティングを比較する' },
+    email_nurture: { title: 'リードを育成する仕組みを作る', desc: '記事や診断だけで離脱してしまう訪問者が多い場合に。', href: 'comparisons/getresponse-vs-brevo.html', cta: 'メールツールを比較する' },
+    ecommerce: { title: 'ECサイトの商品ページを最適化する', desc: '商品ページがAIに引用される形になっていない場合に。', href: 'geo/geo-for-ecommerce.html', cta: 'EC向けの対策を見る' }
+  };
+
+  purposeGrid.addEventListener('click', (e) => {
+    const btn = e.target.closest('.purpose-card');
+    if(!btn) return;
+    purposeGrid.querySelectorAll('.purpose-card').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentPurpose = btn.dataset.purpose;
+    pasteEl.placeholder = PASTE_PLACEHOLDERS[currentPurpose];
+    pasteLabel.textContent = PASTE_LABELS[currentPurpose];
+  });
+
+  function todayStr(){ return new Date().toISOString().slice(0,10); }
+  function getUsage(){
+    try {
+      const raw = JSON.parse(localStorage.getItem(USAGE_KEY) || '{}');
+      if(raw.date !== todayStr()) return { date: todayStr(), count: 0 };
+      return raw;
+    } catch(e){ return { date: todayStr(), count: 0 }; }
+  }
+  function setUsage(u){ try { localStorage.setItem(USAGE_KEY, JSON.stringify(u)); } catch(e){} }
+  function usesLeft(){ return Math.max(0, MAX_USES - getUsage().count); }
+  function updateQuota(){
+    const left = usesLeft();
+    quotaEl.textContent = left > 0 ? `無料版：本日あと${left}回／テスト人数${FREE_PERSONA_CAP}人・文字数5,000まで` : '本日の無料枠は終了しました。また明日どうぞ。';
+    genBtn.disabled = left <= 0;
+  }
+
+  function normalizeUrl(v){
+    v = (v||'').trim();
+    if(!v) return null;
+    if(!/^https?:\/\//i.test(v)) v = 'https://' + v;
+    try { return new URL(v).href; } catch(e){ return null; }
+  }
+
+  function mechanicalAnalyze(raw){
+    const looksHtml = /<\s*html|<\s*body|<\s*div|<\s*p[\s>]/i.test(raw);
+    let doc = null;
+    let plainText = raw;
+    let metaTitle = null, metaDescription = null, robotsMeta = '記載なし', schemaTypes = [];
+    let headings = {h1:0,h2:0,h3:0};
+
+    if(looksHtml){
+      try{
+        doc = new DOMParser().parseFromString(raw, 'text/html');
+        metaTitle = doc.querySelector('title') ? doc.querySelector('title').textContent.trim() : null;
+        const md = doc.querySelector('meta[name="description" i]');
+        metaDescription = md ? md.getAttribute('content') : null;
+        const rb = doc.querySelector('meta[name="robots" i]');
+        robotsMeta = rb ? rb.getAttribute('content') : '記載なし';
+        ['h1','h2','h3'].forEach(tag => headings[tag] = doc.querySelectorAll(tag).length);
+        doc.querySelectorAll('script[type="application/ld+json"]').forEach(s => {
+          try{
+            const j = JSON.parse(s.textContent);
+            const t = j['@type'];
+            if(t) schemaTypes.push(Array.isArray(t) ? t.join('/') : t);
+          }catch(e){}
+        });
+        plainText = (doc.body ? doc.body.innerText : doc.documentElement.textContent) || raw;
+      }catch(e){ plainText = raw; }
+    }
+
+    const paras = plainText.split(/\n{2,}|\r\n{2,}/).map(p => p.trim()).filter(p => p.length > 8);
+    const blocks = paras.map((p, i) => ({ id: 'b' + (i+1), text: p.slice(0, 600) }));
+
+    let duplicateCount = 0;
+    for(let i=0;i<blocks.length;i++){
+      for(let j=i+1;j<blocks.length;j++){
+        const a = blocks[i].text.replace(/\s+/g,''), b = blocks[j].text.replace(/\s+/g,'');
+        if(a.length > 20 && b.length > 20){
+          const shorter = Math.min(a.length,b.length), longer = Math.max(a.length,b.length);
+          if(shorter/longer > 0.85 && a.slice(0,30) === b.slice(0,30)) duplicateCount++;
+        }
+      }
+    }
+
+    return {
+      isHtml: looksHtml, metaTitle, metaDescription, robotsMeta, schemaTypes, headings,
+      wordCount: plainText.replace(/\s+/g,'').length,
+      duplicateCount, blocks
+    };
+  }
+
+  function escapeHtml(s){
+    return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+  function verdictClass(v){
+    if(v && v.includes('十分')) return 'covered';
+    if(v && v.includes('一部')) return 'partial';
+    return 'uncovered';
+  }
+  function themeStatusCounts(themes){
+    let c=0,p=0,u=0;
+    themes.forEach(t => { if(t.status==='covered') c++; else if(t.status==='partial') p++; else u++; });
+    return {c,p,u};
+  }
+
+  function renderScreens(result, blocks, purpose, scopeNote){
+    lastResult = result; lastBlocks = blocks;
+    const themes = result.themes || [];
+    const counts = themeStatusCounts(themes);
+    const allQuestions = [];
+    themes.forEach(t => {
+      (t.questions||[]).forEach(q => {
+        q.theme = t.theme;
+        q.qid = 'q' + allQuestions.length;
+        allQuestions.push(q);
+      });
+    });
+    const uncoveredQ = allQuestions.filter(q => verdictClass(q.verdict) === 'uncovered');
+    const criticalIssues = uncoveredQ.slice(0,3).map(q => `「${q.q}」に十分答えられていません`);
+    const strengths = themes.filter(t=>t.status==='covered').slice(0,3).map(t=>`${t.theme}については、十分な情報があります`);
+
+    let html = '';
+
+    html += `<section class="diag-screen">
+      <div class="ds-kicker">Screen 01 ／ 総合サマリー</div>
+      <h2>結論：${counts.c}テーマがカバー済み、${counts.p}テーマが一部不足、${counts.u}テーマが未カバーです</h2>
+      <p style="font-size:12.5px;color:var(--ink-faint);">${escapeHtml(scopeNote)}</p>
+      <div class="sim-disclaimer">この結果は実際のChatGPT/Gemini等への掲載順位や将来の露出を予測するものではありません。「同一条件下での回答充足シミュレーション」です。</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;">
+        <div class="recommend-box" style="margin:0;"><div class="rb-label">強み</div><ul style="font-size:13px;color:var(--ink-dim);padding-left:18px;margin:8px 0 0;">${(strengths.length?strengths:['まだ目立った強みは検出されていません']).map(s=>`<li>${escapeHtml(s)}</li>`).join('')}</ul></div>
+        <div class="recommend-box" style="margin:0;"><div class="rb-label">重大な問題</div><ul style="font-size:13px;color:var(--ink-dim);padding-left:18px;margin:8px 0 0;">${(criticalIssues.length?criticalIssues:['重大な問題は検出されませんでした']).map(s=>`<li>${escapeHtml(s)}</li>`).join('')}</ul></div>
+      </div>
+    </section>`;
+
+    if(purpose !== 'draft'){
+      const cf = result.confirmed || {};
+      html += `<section class="diag-screen">
+        <div class="ds-kicker">Screen 02 ／ 技術診断（確認済み事実）</div>
+        <h2>クロール・構造・Schemaの状態</h2>
+        <span class="confidence confirmed">CONFIRMED</span>
+        <table style="width:100%;border-collapse:collapse;margin:12px 0;font-size:13px;">
+          <tr><td style="padding:8px 0;color:var(--ink-faint);width:40%;">タイトル</td><td style="padding:8px 0;">${escapeHtml(cf.title || '取得不可')}</td></tr>
+          <tr><td style="padding:8px 0;color:var(--ink-faint);">meta description</td><td style="padding:8px 0;">${escapeHtml(cf.meta_description || '取得不可')}</td></tr>
+          <tr><td style="padding:8px 0;color:var(--ink-faint);">robots</td><td style="padding:8px 0;">${escapeHtml(cf.robots || '取得不可（ブラウザのセキュリティ制限）')}</td></tr>
+          <tr><td style="padding:8px 0;color:var(--ink-faint);">構造化データ</td><td style="padding:8px 0;">${(cf.schema_types||[]).length ? escapeHtml(cf.schema_types.join(', ')) : '検出されず'}</td></tr>
+          <tr><td style="padding:8px 0;color:var(--ink-faint);">見出し構造</td><td style="padding:8px 0;">${escapeHtml(cf.headings || '取得不可')}</td></tr>
+          <tr><td style="padding:8px 0;color:var(--ink-faint);">重複コンテンツ</td><td style="padding:8px 0;">${cf.duplicates != null ? cf.duplicates + '件の重複候補' : '取得不可'}</td></tr>
+        </table>
+      </section>`;
+    }
+
+    const diag = result.ai_diagnosis || {};
+    html += `<section class="diag-screen">
+      <div class="ds-kicker">Screen 03 ／ AI検索診断（推定）</div>
+      <h2>回答性・具体性・根拠・曖昧性</h2>
+      <span class="confidence observed">OBSERVED（AI推定）</span>
+      ${['answerability','specificity','evidence','ambiguity'].map(k => {
+        const labels = {answerability:'回答性', specificity:'具体性', evidence:'根拠の有無', ambiguity:'曖昧な表現'};
+        const d = diag[k] || {};
+        return `<div style="margin:14px 0;"><div style="font-size:13px;color:var(--ink);font-weight:600;">${labels[k]}：${escapeHtml(d.level||'情報不足')}</div><div style="font-size:12.5px;color:var(--ink-dim);margin-top:2px;">${escapeHtml(d.reason||'')}</div></div>`;
+      }).join('')}
+    </section>`;
+
+    const fixes = (result.top_fixes || uncoveredQ.slice(0,8).map(q=>({priority:1,location:q.theme,issue:q.q,action:q.fix||''})));
+    html += `<section class="diag-screen">
+      <div class="ds-kicker">Screen 04 ／ 改善アクション（優先順）</div>
+      <h2>何を、どこから直すか</h2>
+      ${fixes.map((f,i) => `<div class="cq-item"><div class="cq-q">${i+1}. ${escapeHtml(f.issue||f.location||'')}</div><div class="cq-verdict">箇所：${escapeHtml(f.location||'—')}</div><p style="font-size:13px;color:var(--ink-dim);margin:4px 0 0;">${escapeHtml(f.action||'')}</p></div>`).join('')}
+    </section>`;
+
+    const sims = result.simulation_examples || [];
+    html += `<section class="diag-screen">
+      <div class="ds-kicker">Screen 05 ／ 検索シミュレーション</div>
+      <h2>想定AI質問 → 取得箇所 → 採用判断</h2>
+      <div class="sim-disclaimer">実際のAIの内部処理そのものではなく、同一条件下でのシミュレーションです。</div>
+      ${sims.map(s => `
+        <div class="recommend-box" style="margin:14px 0;">
+          <div class="rb-label">想定質問</div>
+          <div class="rb-name" style="font-size:14px;">${escapeHtml(s.q)}</div>
+          <p style="font-size:12.5px;color:var(--ink-dim);margin:8px 0 4px;"><strong style="color:var(--ink);">取得箇所：</strong>${escapeHtml(s.retrieved||'該当なし')}</p>
+          <p style="font-size:12.5px;color:var(--ink-dim);margin:4px 0;"><strong style="color:var(--ink);">採用判断：</strong>${escapeHtml(s.judgment||'')}</p>
+          <p style="font-size:12.5px;color:var(--ink-dim);margin:4px 0;"><strong style="color:var(--ink);">不足情報：</strong>${escapeHtml(s.missing||'なし')}</p>
+          <p style="font-size:12.5px;color:var(--ink-dim);margin:4px 0;"><strong style="color:var(--ink);">別ソースを探す可能性：</strong>${escapeHtml(s.seek_more||'—')}</p>
+          <p style="font-size:12.5px;color:var(--amber);margin:4px 0 0;"><strong>改善案：</strong>${escapeHtml(s.improvement||'')}</p>
+        </div>
+      `).join('')}
+    </section>`;
+
+    const hasBlocks = blocks && blocks.length > 0;
+    html += `<section class="diag-screen" id="coverageScreen">
+      <div class="ds-kicker">Screen 06 ／ Coverage Map（最大${FREE_PERSONA_CAP}件の想定質問）</div>
+      <h2>どこをカバーできていて、どこが未カバーか</h2>
+      ${hasBlocks ? `
+      <div style="display:grid;grid-template-columns:1fr;gap:16px;margin-top:16px;">
+        <div>
+          <div style="font-size:11px;color:var(--ink-faint);margin-bottom:8px;">原文（クリックで関連質問へ）</div>
+          <div class="src-panel" id="srcPanel"></div>
+        </div>
+        <div id="coverageList"></div>
+      </div>` : `<div id="coverageList" style="margin-top:16px;"></div>`}
+    </section>`;
+
+    const cats = (result.categories || ['ai_visibility']).filter(c => RECO_CATALOG[c]).slice(0,3);
+    html += `<section class="diag-screen">
+      <div class="ds-kicker">おすすめの解決手段</div>
+      <h2>まず自力で直す。足りない場合だけ、ツールを使う</h2>
+      <p style="font-size:13px;">上の改善アクションは、多くの場合ツールなしで直せます。それでも足りない場合の選択肢です。</p>
+      ${cats.map(c => { const r = RECO_CATALOG[c]; return `<div class="recommend-box"><div class="rb-label">診断結果に基づくおすすめ</div><div class="rb-name">${r.title}</div><div class="rb-desc">${r.desc}</div><div class="rb-foot"><span></span><a class="btn" href="${r.href}">${r.cta} →</a></div></div>`; }).join('')}
+    </section>`;
+
+    html += `<section class="diag-screen">
+      <div class="ds-kicker">次のステップ</div>
+      <h2>競合と比べる／修正して再テストする</h2>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn-ghost" id="battlefieldBtn" style="cursor:pointer;">競合と比較する（Battlefield）</button>
+        <button class="btn-ghost" id="retestBtn" style="cursor:pointer;">本文を修正して再テストする</button>
+      </div>
+      <div id="battlefieldArea" style="margin-top:20px;"></div>
+      <div id="retestArea" style="margin-top:20px;"></div>
+    </section>`;
+
+    resultScreens.innerHTML = html;
+    resultScreens.hidden = false;
+
+    if(hasBlocks){
+      const srcPanel = document.getElementById('srcPanel');
+      srcPanel.innerHTML = blocks.map(b => {
+        const relatedQ = allQuestions.filter(q => (q.block_ids||[]).includes(b.id));
+        const status = relatedQ.length ? verdictClass(relatedQ[0].verdict) : 'uncovered';
+        const needsAdd = relatedQ.filter(q => verdictClass(q.verdict) !== 'covered' && q.fix);
+        const markers = needsAdd.map(q => `<div class="insert-marker" data-qid="${q.qid}">＋ ここに追加すると改善：${escapeHtml((q.fix||'').slice(0,90))}</div>`).join('');
+        return `<div class="src-block status-${status}" id="block-${b.id}" data-block="${b.id}">${escapeHtml(b.text)}${markers}</div>`;
+      }).join('');
+      srcPanel.addEventListener('click', (e) => {
+        const marker = e.target.closest('.insert-marker');
+        if(marker){
+          e.stopPropagation();
+          const qEl = document.getElementById('cq-' + marker.dataset.qid);
+          if(qEl){
+            document.getElementById('coverageScreen').scrollIntoView({behavior:'smooth', block:'start'});
+            qEl.scrollIntoView({behavior:'smooth', block:'center'});
+            qEl.classList.add('flash');
+            setTimeout(()=>qEl.classList.remove('flash'), 1400);
+          }
+          return;
+        }
+        const el = e.target.closest('.src-block');
+        if(!el) return;
+        const bid = el.dataset.block;
+        document.getElementById('coverageScreen').scrollIntoView({behavior:'smooth', block:'start'});
+        document.querySelectorAll(`.cq-item[data-blocks*="${bid}"]`).forEach(item => {
+          item.classList.add('flash');
+          setTimeout(()=>item.classList.remove('flash'), 1400);
+        });
+      });
+    }
+
+    const coverageList = document.getElementById('coverageList');
+    coverageList.innerHTML = themes.map(t => `
+      <div class="coverage-theme">
+        <div class="ct-head">
+          <div class="ct-title">${escapeHtml(t.theme)}</div>
+          <span class="coverage-badge ${t.status}">${t.status==='covered'?'カバー済み':t.status==='partial'?'部分カバー':'未カバー'}</span>
+        </div>
+        ${(t.questions||[]).map(q => `
+          <div class="cq-item" id="cq-${q.qid}" data-blocks="${(q.block_ids||[]).join(',')}">
+            <div class="cq-q">${escapeHtml(q.q)}</div>
+            <div class="cq-verdict">判定：${escapeHtml(q.verdict||'')}${q.persona ? ' ／ 想定検索者：'+escapeHtml(q.persona) : ''}</div>
+            ${q.missing ? `<div style="font-size:12.5px;color:var(--ink-dim);margin-top:4px;">不足：${escapeHtml(q.missing)}</div>` : ''}
+            ${q.fix ? `<div style="font-size:12.5px;color:var(--amber);margin-top:2px;">改善案：${escapeHtml(q.fix)}</div>` : ''}
+            ${hasBlocks && (q.block_ids||[]).length ? `<a class="cq-jump" data-jump="${q.block_ids[0]}">該当箇所を見る →</a>` : ''}
+          </div>
+        `).join('')}
+      </div>
+    `).join('');
+
+    coverageList.addEventListener('click', (e) => {
+      const jump = e.target.closest('[data-jump]');
+      if(!jump) return;
+      const bid = jump.dataset.jump;
+      const block = document.getElementById('block-'+bid);
+      if(block){
+        block.scrollIntoView({behavior:'smooth', block:'center'});
+        block.classList.add('flash');
+        setTimeout(()=>block.classList.remove('flash'), 1400);
+      }
+    });
+
+    document.getElementById('battlefieldBtn').addEventListener('click', runBattlefield);
+    const retestBtn = document.getElementById('retestBtn');
+    if(retestBtn) retestBtn.addEventListener('click', runRetest);
+  }
+
+  async function runTest(){
+    if(usesLeft() <= 0) return;
+
+    let text = pasteEl.value.trim();
+    const file = fileEl.files[0];
+    if(file){ text = await file.text(); }
+    if(!text){
+      statusMsg.textContent = '本文を貼り付けるか、ファイルを選択してください。';
+      statusMsg.classList.add('err');
+      return;
+    }
+    text = text.slice(0, 5000);
+    const urlLabel = normalizeUrl(urlEl.value);
+    const mech = mechanicalAnalyze(text);
+    const blocks = mech.blocks;
+    const skipTechnical = currentPurpose === 'draft';
+
+    let scopeNote;
+    if(currentPurpose === 'site') scopeNote = `解析対象：${urlLabel ? urlLabel + '（参考ラベル）／' : ''}貼り付けられた複数ページの本文（約${mech.wordCount}文字）`;
+    else if(currentPurpose === 'page') scopeNote = `解析対象：${urlLabel ? urlLabel + '（参考ラベル）／' : ''}貼り付けられた本文（約${mech.wordCount}文字）`;
+    else scopeNote = `解析対象：公開前コンテンツ（約${mech.wordCount}文字）。robots・Schema等、公開後にのみ意味を持つ項目は診断対象外です。`;
+
+    statusMsg.classList.remove('err');
+    statusMsg.textContent = '100人の仮想検索者でテスト中…（数十秒かかります）';
+    genBtn.disabled = true;
+    resultScreens.hidden = true;
+
+    const confirmedNote = `
+機械解析で以下が確認済みです（この事実は変更せずそのまま使ってください）：
+- タイトル: ${mech.metaTitle || '不明'}
+- meta description: ${mech.metaDescription || '不明'}
+- robots meta: ${mech.robotsMeta}
+- 構造化データ: ${mech.schemaTypes.length ? mech.schemaTypes.join(',') : 'なし'}
+- 見出し構成: h1=${mech.headings.h1} h2=${mech.headings.h2} h3=${mech.headings.h3}
+- 重複候補: ${mech.duplicateCount}件
+- 本文ブロック（IDと本文）: ${JSON.stringify(blocks)}
+`;
+
+    const PURPOSE_TASK_NOTE = {
+      site: '対象は「サイト全体」です。貼り付けられた本文は複数ページを"---"で区切って結合したものです。あるテーマについて、どのページかに情報が存在すればそのテーマは十分カバーとみなし、どのページにも存在しなければ未カバーとしてください。ページ間の情報の重複・分散、サイト構造としての一貫性も踏まえて評価してください（1ページ単体の完結性は問いません）。',
+      page: '対象は「1ページ／1記事」です。このページ単体の本文のみで回答が完結しているかを厳密に評価してください。他のページに情報があるはずだという推測はせず、このページに書かれていない情報は「一部不足」または「別ソース必要」として扱ってください。',
+      draft: '対象は「公開前コンテンツ」です。まだWeb上に存在しないため、クロール可能性・robots・構造化データ・内部リンクなど、公開後にのみ意味を持つ技術的診断は一切行わないでください。内容面（回答範囲の広さ・具体性・根拠・情報の不足）のみを、公開後を想定して評価してください。'
+    };
+
+    const instruction = `あなたはAI検索(GEO)専門のアナリストです。以下のコンテンツについて「100人仮想AI検索者テスト」を行ってください。
+
+診断目的：${PURPOSE_TASK_NOTE[currentPurpose]}
+
+${confirmedNote}
+対象本文：
+"""
+${text}
+"""
+
+やること：
+1. 検索意図・知識量・立場・条件が異なる、最大${FREE_PERSONA_CAP}人の仮想検索者を想定し、それぞれが投げそうな自然文のAI検索質問を生成する（重複しないこと）
+2. 質問をテーマ（質問領域）ごとにグルーピングする
+3. 各質問について、対象コンテンツで「十分回答可能」「一部不足」「別ソース必要」のいずれかを判定する
+4. 判定の根拠となった本文ブロックのIDをblock_idsに含める（上記の本文ブロックのIDを使うこと）
+5. 各テーマをcovered（すべて十分回答可能）／partial（一部不足あり）／uncovered（大半が別ソース必要）に分類する
+6. ${skipTechnical ? 'このコンテンツは非公開のため、robots・crawl・Schema等の技術診断は行わないこと。confirmedは省略してよい。' : '確認済みの技術情報（上記）をconfirmedとしてそのまま使うこと。'}
+7. 回答性・具体性・根拠・曖昧性の4点を推定診断する（断定的すぎる表現は避け、根拠を示す）
+8. 優先順位付きの改善アクションを最大8件作る
+9. 「検索シミュレーション」として、代表的な質問3〜5件について、想定質問→取得箇所→採用判断→不足情報→別ソースを探す可能性→改善案、を会話的に記述する
+10. 診断結果に応じて、関連するカテゴリを ai_visibility / content_writing / structured_data / hosting_speed / email_nurture / ecommerce の中から最大3つ選ぶ
+
+厳守事項：
+- 実際のAI検索での掲載確率・順位・将来予測は一切述べない（「同一条件下のシミュレーション」であることを前提にする）
+- AIの内部思考をそのまま見ているかのような断定表現、根拠のない精密スコアは使わない
+- 確認できない項目は「情報不足」「取得不可」と正直に書く
+
+JSONで、次の形にちょうど従って返してください（他のキーは追加しない）：
+{"confirmed":{"title":"...","meta_description":"...","robots":"...","schema_types":["..."],"headings":"h1:1 h2:5...","duplicates":0},"themes":[{"theme":"...","status":"covered|partial|uncovered","questions":[{"q":"...","persona":"...","verdict":"...","block_ids":["b1"],"missing":"...","fix":"..."}]}],"ai_diagnosis":{"answerability":{"level":"...","reason":"..."},"specificity":{"level":"...","reason":"..."},"evidence":{"level":"...","reason":"..."},"ambiguity":{"level":"...","reason":"..."}},"top_fixes":[{"priority":1,"location":"...","issue":"...","action":"..."}],"simulation_examples":[{"q":"...","retrieved":"...","judgment":"...","missing":"...","seek_more":"...","improvement":"..."}],"categories":["..."]}`;
+
+    try{
+      const parsed = await callApi('/api/diagnose', { instruction });
+
+      renderScreens(parsed, blocks, currentPurpose, scopeNote);
+      statusMsg.textContent = '';
+
+      const u = getUsage(); u.count += 1; setUsage(u); updateQuota();
+      document.getElementById('resultScreens').scrollIntoView({behavior:'smooth', block:'start'});
+    }catch(err){
+      console.error('runTest failed:', err);
+      const codeMsgs = {
+        missing_api_key: 'サーバー側にAPIキーが設定されていません(管理者向け：ANTHROPIC_API_KEYを設定してください)。',
+        rate_limited: 'リクエストが混み合っています。少し時間を置いてお試しください。',
+        invalid_json: '応答の解析に失敗しました（出力が途中で切れた可能性があります）。文字数を減らしてもう一度お試しください。',
+        prompt_too_large: '本文が長すぎます。文字数を減らしてください。',
+        refused: 'この内容の分析はできませんでした。内容を見直してもう一度お試しください。',
+        server_error: 'サーバーでエラーが発生しました。もう一度お試しください。',
+      };
+      statusMsg.textContent = codeMsgs[err.code] || ('テストに失敗しました（' + (err.code || err.message || '不明なエラー') + '）。もう一度お試しください。');
+      statusMsg.classList.add('err');
+    }finally{
+      if(usesLeft() > 0){ genBtn.disabled = false; }
+    }
+  }
+
+  async function runBattlefield(){
+    const competitorText = (competitorEl.value || '').trim().slice(0, 5000);
+    const area = document.getElementById('battlefieldArea');
+    if(!competitorText){
+      area.innerHTML = '<p style="font-size:13px;color:var(--ink-faint);">競合の本文が入力されていません。上部の「競合の本文」欄に貼り付けてから、もう一度お試しください。</p>';
+      return;
+    }
+    if(usesLeft() <= 0){ area.innerHTML = '<p style="font-size:13px;color:var(--ink-faint);">本日の無料枠を使い切りました。</p>'; return; }
+    area.innerHTML = '<p style="font-size:13px;color:var(--ink-faint);">競合と比較中…</p>';
+
+    const questions = (lastResult.themes||[]).flatMap(t => (t.questions||[]).map(q => q.q));
+
+    const instruction = `以下は競合ページの本文です。この質問リストそれぞれについて、競合の本文が十分に回答できているかを判定してください。
+
+競合ページの本文：
+"""
+${competitorText}
+"""
+
+質問リスト：${JSON.stringify(questions.slice(0,30))}
+
+各質問を次の4分類のいずれかに振り分けてください：
+- self_only（自社のみ十分カバー、競合は不十分）
+- both（両方とも十分カバー）
+- competitor_only（競合のみ十分カバー、自社は不十分）
+- neither（どちらも十分カバーしていない）
+
+競合の文章をそのままコピーせず、competitor_onlyの中から「少ない追記で自社も改善できそうな」質問を最大10件選び、それぞれについて「競合側に存在する情報要件」「自社に不足している情報」「追加すべき内容の方向性」を記述してください（steal10として出力）。
+
+JSONで、次の形にちょうど従って返してください（他のキーは追加しない）：
+{"self_only":["質問","..."],"both":["..."],"competitor_only":["..."],"neither":["..."],"steal10":[{"q":"...","competitor_has":"...","we_lack":"...","add":"..."}]}`;
+
+    try{
+      const bf = await callApi('/api/battlefield', { instruction });
+
+      const u = getUsage(); u.count += 1; setUsage(u); updateQuota();
+
+      area.innerHTML = `
+        <div class="sim-disclaimer">競合分析は、貼り付けられた競合本文のみに基づく比較です。競合サイトの全体や実際のAI検索順位を反映するものではありません。</div>
+        <div class="battlefield-grid">
+          <div class="bf-quad"><div class="bf-label">自社のみカバー</div><div class="bf-count">${(bf.self_only||[]).length}</div><ul>${(bf.self_only||[]).slice(0,4).map(q=>`<li>${escapeHtml(q)}</li>`).join('')}</ul></div>
+          <div class="bf-quad"><div class="bf-label">両方カバー</div><div class="bf-count">${(bf.both||[]).length}</div><ul>${(bf.both||[]).slice(0,4).map(q=>`<li>${escapeHtml(q)}</li>`).join('')}</ul></div>
+          <div class="bf-quad"><div class="bf-label">競合のみカバー</div><div class="bf-count">${(bf.competitor_only||[]).length}</div><ul>${(bf.competitor_only||[]).slice(0,4).map(q=>`<li>${escapeHtml(q)}</li>`).join('')}</ul></div>
+          <div class="bf-quad"><div class="bf-label">誰もカバーせず（新規候補）</div><div class="bf-count">${(bf.neither||[]).length}</div><ul>${(bf.neither||[]).slice(0,4).map(q=>`<li>${escapeHtml(q)}</li>`).join('')}</ul></div>
+        </div>
+        <h3 style="margin-top:24px;">Steal 10：少ない追記で改善できる候補</h3>
+        ${(bf.steal10||[]).map(s => `<div class="steal10-item"><div class="steal10-q">${escapeHtml(s.q)}</div><div class="steal10-detail"><div>競合に存在する情報要件：${escapeHtml(s.competitor_has||'')}</div><div>自社に不足：${escapeHtml(s.we_lack||'')}</div><div style="color:var(--amber);">追加すべき内容：${escapeHtml(s.add||'')}</div></div></div>`).join('')}
+      `;
+    }catch(err){
+      console.error('runBattlefield failed:', err);
+      area.innerHTML = '<p style="font-size:13px;color:var(--ink-faint);">競合分析に失敗しました（' + escapeHtml(err.code || err.message || String(err)) + '）。もう一度お試しください。</p>';
+    }
+  }
+
+  async function runRetest(){
+    if(usesLeft() <= 0) return;
+    const prevThemes = lastResult ? lastResult.themes || [] : [];
+    const prevCounts = themeStatusCounts(prevThemes);
+    await runTest();
+    if(!lastResult) return;
+    const newCounts = themeStatusCounts(lastResult.themes || []);
+    const area = document.getElementById('retestArea');
+    if(area){
+      area.innerHTML = `
+        <h3>Before / After</h3>
+        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+          <tr><th style="text-align:left;padding:8px 0;color:var(--ink-faint);"></th><th style="text-align:left;padding:8px 0;">Before</th><th style="text-align:left;padding:8px 0;">After</th></tr>
+          <tr><td style="padding:6px 0;color:var(--ink-dim);">カバー済み</td><td>${prevCounts.c}</td><td style="color:#8FD18F;">${newCounts.c}</td></tr>
+          <tr><td style="padding:6px 0;color:var(--ink-dim);">部分カバー</td><td>${prevCounts.p}</td><td style="color:var(--amber);">${newCounts.p}</td></tr>
+          <tr><td style="padding:6px 0;color:var(--ink-dim);">未カバー</td><td>${prevCounts.u}</td><td style="color:#E08A8A;">${newCounts.u}</td></tr>
+        </table>
+      `;
+    }
+  }
+
+  genBtn.addEventListener('click', runTest);
+  updateQuota();
+</script>
+<script>
+(function(){
+  var GLOSSARY = {"GEO": {"term": "GEO", "short": "生成AI検索エンジンの回答内で、自社コンテンツが引用・参照されるように最適化する取り組み。", "link": "glossary/index.html#geo"}, "SEO": {"term": "SEO", "short": "検索エンジンの検索結果ページで、自社サイトが上位に表示されるように最適化する取り組み。", "link": "glossary/index.html#seo"}, "RAG": {"term": "RAG（検索拡張生成）", "short": "AIが回答を生成する際に、外部の検索結果や文書を参照してから答えを組み立てる仕組み。", "link": "glossary/index.html#rag"}, "Retrieval": {"term": "Retrieval（検索・取得）", "short": "ユーザーの問いに関連する文書やページを、AIが検索インデックスなどから取得する処理。", "link": "glossary/index.html#retrieval"}, "Entity": {"term": "Entity（エンティティ）", "short": "人物・企業・製品など、AIが固有のものとして認識・区別できる情報の単位。", "link": "glossary/index.html#entity"}, "Citation": {"term": "Citation（引用）", "short": "AIが回答の根拠として、特定のページや情報源を示すこと。", "link": "glossary/index.html#citation"}, "Passage": {"term": "Passage（パッセージ）", "short": "ページ全体ではなく、意味的にまとまった一部分（段落など）の単位。", "link": "glossary/index.html#passage"}, "SERP": {"term": "SERP", "short": "Search Engine Results Page。検索エンジンの検索結果ページのこと。", "link": "glossary/index.html#serp"}, "Query Expansion": {"term": "Query Expansion（クエリ拡張）", "short": "1つの検索クエリから、関連する複数の検索意図・サブクエリへ探索範囲を広げる処理。", "link": "glossary/index.html#query-expansion"}, "Embedding": {"term": "Embedding（埋め込み）", "short": "文章や単語の意味を、機械が計算できる数値のベクトルとして表現したもの。", "link": "glossary/index.html#embedding"}, "Reranking": {"term": "Reranking（再順位付け）", "short": "一度取得した候補の情報を、関連性の高さで並び替え直す処理。", "link": "glossary/index.html#reranking"}, "Intent": {"term": "Intent（検索意図）", "short": "ユーザーが検索クエリの背後で本当に知りたいこと・達成したいこと。", "link": "glossary/index.html#intent"}, "Context": {"term": "Context（コンテキスト）", "short": "AIが回答を生成する際に参照する、取得済みの情報のまとまり。", "link": "glossary/index.html#context"}, "Information Gain": {"term": "Information Gain（情報利得）", "short": "既存の情報に対して、新しい情報がどれだけ理解や判断を前進させるかの度合い。", "link": "glossary/index.html#information-gain"}, "Structured Data": {"term": "Structured Data（構造化データ）", "short": "ページの内容を機械が理解しやすい形式でタグ付けする仕組み（schema.orgなど）。", "link": "glossary/index.html#structured-data"}};
+  var STORAGE_KEY = "signal_viewed_terms";
+
+  function getViewed(){
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); }
+    catch(e){ return []; }
+  }
+  function markViewed(key){
+    var viewed = getViewed();
+    if(viewed.indexOf(key) === -1){
+      viewed.push(key);
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(viewed)); } catch(e){}
+    }
+  }
+  function closeAllTooltips(){
+    document.querySelectorAll(".term-tooltip").forEach(function(t){ t.remove(); });
+  }
+  function initTerms(){
+    var viewed = getViewed();
+    document.querySelectorAll(".term").forEach(function(el){
+      var key = el.getAttribute("data-term");
+      if(viewed.indexOf(key) !== -1){ el.classList.add("term-viewed"); }
+      el.addEventListener("click", function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        var data = GLOSSARY[key];
+        if(!data) return;
+        var already = el.querySelector(".term-tooltip");
+        closeAllTooltips();
+        if(already) return;
+        markViewed(key);
+        el.classList.add("term-viewed");
+        var tip = document.createElement("span");
+        tip.className = "term-tooltip";
+        var defEl = document.createElement("span");
+        defEl.className = "tt-def";
+        defEl.textContent = data.short;
+        var linkEl = document.createElement("a");
+        linkEl.className = "tt-more";
+        linkEl.href = data.link;
+        linkEl.textContent = "詳しく読む →";
+        tip.appendChild(defEl);
+        tip.appendChild(linkEl);
+        el.appendChild(tip);
+      });
+    });
+    document.addEventListener("click", function(e){
+      if(!e.target.closest(".term")){ closeAllTooltips(); }
+    });
+  }
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", initTerms);
+  } else {
+    initTerms();
+  }
+})();
+</script>
+<nav class="tab-bar">
+  <a href="index.html" class="active"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v9h5v-5h4v5h5v-9"/></svg><span>ホーム</span></a>
+  <a href="articles.html"><svg viewBox="0 0 24 24"><path d="M5 4h9l5 5v11H5z"/><path d="M14 4v5h5"/><path d="M8 13h8M8 17h8"/></svg><span>記事</span></a>
+  <a href="comparisons/index.html"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20v-3" stroke-linecap="round"/></svg><span>比較</span></a>
+  <a href="glossary/index.html"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4z"/></svg><span>用語集</span></a>
+</nav>
+</body>
+</html>
